@@ -2,8 +2,8 @@ plugins {
   `java-library`
 }
 
-group = 'dev.hireben.demo'
-version = '1.0.0-SNAPSHOT'
+group = "dev.hireben.demo"
+version = "1.0.0-SNAPSHOT"
 
 java {
   toolchain {
