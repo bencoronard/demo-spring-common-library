@@ -15,6 +15,6 @@ public class Paginable {
 
   int pageNumber;
   int pageSize;
-  Map<String, Boolean> sortFieldsDesc;
+  Map<String, Boolean> sortFieldsAsc;
 
 }
