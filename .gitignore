@@ -23,10 +23,8 @@
 hs_err_pid*
 replay_pid*
 
-# Gradle project-specific cache directory
+# Gradle files
 .gradle
-
-# Gradle build output directory
 build
 
 # IDE and OS files
