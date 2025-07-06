@@ -16,7 +16,10 @@ repositories {
 }
 
 dependencies {
-  implementation("org.springframework:spring-web:6.2.8")
+  implementation("org.springframework.boot:spring-boot:3.5.3")
+  implementation("org.springframework:spring-webmvc:6.2.8")
+  implementation("com.fasterxml.jackson.core:jackson-databind:2.19.1")
+  implementation("org.slf4j:slf4j-api:2.0.17")
   compileOnly("org.projectlombok:lombok:1.18.38")
   annotationProcessor("org.projectlombok:lombok:1.18.38")
   testImplementation("org.junit.jupiter:junit-jupiter:5.12.1")
