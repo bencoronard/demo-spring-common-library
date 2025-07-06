@@ -57,7 +57,7 @@ public class PaginationResolver implements HandlerMethodArgumentResolver {
         .filter(parts -> parts.length == 2)
         .collect(Collectors.toMap(
             parts -> parts[0],
-            parts -> "desc".equalsIgnoreCase(parts[1])));
+            parts -> "asc".equalsIgnoreCase(parts[1])));
 
     return Paginable.builder()
         .pageNumber(pageNumber)
