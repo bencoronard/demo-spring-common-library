@@ -8,19 +8,18 @@ import org.springframework.web.context.request.WebRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class ErrorAttributesConfig extends DefaultErrorAttributes {
 
   // ---------------------------------------------------------------------------//
   // Dependencies
   // ---------------------------------------------------------------------------//
 
-  @SuppressWarnings("unused")
   private final ObjectMapper objectMapper;
   // private final EnvironmentUtil environment;
 
@@ -31,10 +30,9 @@ public class ErrorAttributesConfig extends DefaultErrorAttributes {
   @Override
   public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
 
-    // Throwable error = super.getError(webRequest);
-    // String errorMsg = super.getMessage(webRequest, error);
-    // String errorClassName = error == null ? "ServletException" :
-    // error.getClass().getName();
+    Throwable error = super.getError(webRequest);
+    String errorMsg = super.getMessage(webRequest, error);
+    String errorClassName = error == null ? "ServletException" : error.getClass().getName();
 
     // String errorCode = RequestUtil.extractAttribute(webRequest,
     // RequestAttributeKey.ERR_RESP_CODE, String.class)
@@ -74,6 +72,7 @@ public class ErrorAttributesConfig extends DefaultErrorAttributes {
     // return objectMapper.convertValue(errorAttributes, new
     // TypeReference<Map<String, Object>>() {
     // });
+
     return null;
   }
 
