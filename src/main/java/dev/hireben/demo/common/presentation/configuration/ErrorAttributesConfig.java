@@ -20,10 +20,11 @@ public class ErrorAttributesConfig extends DefaultErrorAttributes {
   @Override
   public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
 
+    // timestamp, status, error, exception, message, errors, trace, path
     Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, options);
 
-    RequestUtil.getAttribute(webRequest, RequestAttributeKey.ERROR_DETAIL)
-        .ifPresent(detail -> errorAttributes.put("errors", detail));
+    RequestUtil.getAttribute(webRequest, RequestAttributeKey.TRACE_ID)
+        .ifPresent(id -> errorAttributes.put("traceId", id));
 
     return errorAttributes;
   }
