@@ -21,6 +21,7 @@ dependencies {
   compileOnly("jakarta.servlet:jakarta.servlet-api:6.1.0")
   implementation("jakarta.validation:jakarta.validation-api:3.1.1")
   implementation("com.fasterxml.jackson.core:jackson-databind:2.19.1")
+  implementation("io.jsonwebtoken:jjwt-api:0.12.6")
   implementation("org.slf4j:slf4j-api:2.0.17")
   compileOnly("org.projectlombok:lombok:1.18.38")
   annotationProcessor("org.projectlombok:lombok:1.18.38")
