@@ -11,5 +11,6 @@ public class HttpHeaderKey {
 
   public final String API_KEY = "X-Api-Key";
   public final String TRACE_ID = "X-Trace-Id";
+  public final String AUTH_TOKEN = "Authorization";
 
 }
