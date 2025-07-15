@@ -4,19 +4,18 @@ import java.security.Key;
 import java.security.PublicKey;
 import java.time.Instant;
 import java.time.temporal.TemporalAmount;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import javax.crypto.SecretKey;
-
-import org.springframework.lang.Nullable;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import jakarta.validation.constraints.NotBlank;
 
 public class JwtUtil {
 
@@ -26,25 +25,28 @@ public class JwtUtil {
 
   private final Supplier<JwtBuilder> builder;
   private final JwtParser parser;
+  private final boolean secured;
 
   // ---------------------------------------------------------------------------//
   // Constructors
   // ---------------------------------------------------------------------------//
 
   public JwtUtil(
-      @Nullable Key signingKey,
-      @Nullable Key verificationKey,
-      @NotBlank String issuer) {
+      Key signingKey,
+      Key verificationKey,
+      String issuer) {
 
     this.builder = signingKey == null ? () -> Jwts.builder().issuer(issuer)
         : () -> Jwts.builder().signWith(signingKey).issuer(issuer);
 
-    // Handle verification key setup
     if (verificationKey == null) {
+      this.secured = false;
       this.parser = Jwts.parser().build();
     } else if (verificationKey instanceof SecretKey symmetricKey) {
+      this.secured = true;
       this.parser = Jwts.parser().verifyWith(symmetricKey).build();
     } else if (verificationKey instanceof PublicKey publicKey) {
+      this.secured = true;
       this.parser = Jwts.parser().verifyWith(publicKey).build();
     } else {
       throw new IllegalArgumentException(
@@ -56,20 +58,50 @@ public class JwtUtil {
   // Methods
   // ---------------------------------------------------------------------------//
 
-  public String issueToken(String recipient, Map<String, Object> claims, TemporalAmount ttl) {
+  public String issueToken(
+      String subject,
+      Collection<String> audiences,
+      Map<String, Object> claims,
+      TemporalAmount ttl,
+      Instant nbf) {
+
     Instant now = Instant.now();
-    return this.builder.get()
-        .subject(recipient)
-        .claims(claims)
-        .issuedAt(Date.from(now))
-        .expiration(Date.from(now.plus(ttl)))
-        .compact();
+    Instant tokenEffective = now;
+
+    JwtBuilder jwt = this.builder.get();
+
+    if (nbf != null) {
+      tokenEffective = nbf;
+      jwt.notBefore(Date.from(tokenEffective));
+    }
+
+    if (ttl != null) {
+      Instant expAt = tokenEffective.plus(ttl);
+      if (expAt.isBefore(now)) {
+        throw new IllegalArgumentException("Token expiration cannot be in the past");
+      }
+      jwt.expiration(Date.from(expAt));
+    }
+
+    jwt.id(UUID.randomUUID().toString())
+        .subject(subject)
+        .issuedAt(Date.from(now));
+
+    if (audiences != null && !audiences.isEmpty()) {
+      audiences.forEach(audience -> jwt.audience().add(audience));
+    }
+
+    if (claims != null && !claims.isEmpty()) {
+      jwt.claims(claims);
+    }
+
+    return jwt.compact();
   }
 
   // ---------------------------------------------------------------------------//
 
-  public Claims validateToken(String token) {
-    return parser.parseSignedClaims(token).getPayload();
+  public Claims parseToken(String token) {
+    return secured ? parser.parseSignedClaims(token).getPayload() : parser.parseUnsecuredClaims(token).getPayload();
   }
 
 }
