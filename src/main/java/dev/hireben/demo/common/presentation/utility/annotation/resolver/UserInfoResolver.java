@@ -10,8 +10,10 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import dev.hireben.demo.common.presentation.dto.UserInfoDTO;
+import dev.hireben.demo.common.presentation.utility.JwtUtil;
 import dev.hireben.demo.common.presentation.utility.annotation.UserInfo;
 import dev.hireben.demo.common.presentation.utility.context.HttpHeaderKey;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -20,6 +22,8 @@ public class UserInfoResolver implements HandlerMethodArgumentResolver {
   // ---------------------------------------------------------------------------//
   // Dependencies
   // ---------------------------------------------------------------------------//
+
+  private final JwtUtil jwtUtil;
 
   // ---------------------------------------------------------------------------//
   // Methods
@@ -42,11 +46,15 @@ public class UserInfoResolver implements HandlerMethodArgumentResolver {
       @Nullable WebDataBinderFactory binderFactory) throws Exception {
 
     String token = webRequest.getHeader(HttpHeaderKey.AUTH_TOKEN);
-    if (token == null) {
+    if (token == null || token.isBlank()) {
       throw new MissingRequestHeaderException(HttpHeaderKey.AUTH_TOKEN, parameter);
     }
 
-    return null;
+    Claims claims = jwtUtil.parseToken(token.substring("Bearer ".length()));
+
+    return UserInfoDTO.builder()
+        .id(claims.getSubject())
+        .build();
   }
 
 }
