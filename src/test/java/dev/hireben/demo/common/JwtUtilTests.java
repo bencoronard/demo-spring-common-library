@@ -1,35 +1,67 @@
 package dev.hireben.demo.common;
 
-import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
+import dev.hireben.demo.common.presentation.utility.JwtUtil;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class JwtUtilTests {
 
   // ---------------------------------------------------------------------------//
   // Fields
   // ---------------------------------------------------------------------------//
 
-  private Key privateKey;
-  private Key publicKey;
-  private Key symmetricKey;
+  private final String ISSUER = this.getClass().getName();
+  private JwtUtil withAsymmKeys;
+  private JwtUtil withSymmKey;
+  private JwtUtil withoutKey;
 
   // ---------------------------------------------------------------------------//
   // Methods
   // ---------------------------------------------------------------------------//
 
   @BeforeAll
-  void setup() {
-    privateKey = null;
-    publicKey = null;
-    symmetricKey = null;
+  void setup() throws NoSuchAlgorithmException {
+    // Generate RSA key pair
+    KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
+    keyPairGen.initialize(2048);
+    KeyPair keyPair = keyPairGen.generateKeyPair();
+
+    // Generate AES symmetric key
+    KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+    keyGen.init(256);
+    SecretKey symmKey = keyGen.generateKey();
+
+    // Construct JwtUtil instances
+    this.withAsymmKeys = new JwtUtil(keyPair.getPrivate(), keyPair.getPublic(), ISSUER);
+    this.withSymmKey = new JwtUtil(symmKey, symmKey, ISSUER);
+    this.withoutKey = new JwtUtil(null, null, ISSUER);
   }
 
   // ---------------------------------------------------------------------------//
 
   @Test
-  void test() {
+  void testIssueTokenWithAsymmetricKeys() {
+  }
+
+  // ---------------------------------------------------------------------------//
+
+  @Test
+  void testIssueTokenWithSymmetricKey() {
+  }
+
+  // ---------------------------------------------------------------------------//
+
+  @Test
+  void testIssueTokenWithoutKey() {
   }
 
 }
