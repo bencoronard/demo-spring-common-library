@@ -1,4 +1,3 @@
-
 package dev.hireben.demo.common;
 
 import io.jsonwebtoken.*;
