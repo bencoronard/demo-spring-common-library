@@ -1,10 +1,10 @@
-group = 'dev.hireben.demo'
-version = '1.0.0-SNAPSHOT'
-
 plugins {
   id 'java-library'
   id 'maven-publish'
 }
+
+group = 'dev.hireben.demo'
+version = '1.0.0-SNAPSHOT'
 
 java {
   toolchain {
