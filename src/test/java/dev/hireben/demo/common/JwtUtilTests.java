@@ -50,18 +50,21 @@ public class JwtUtilTests {
 
   @Test
   void testIssueTokenWithAsymmetricKeys() {
+    withAsymmKeys.issueToken(ISSUER, null, null, null, null);
   }
 
   // ---------------------------------------------------------------------------//
 
   @Test
   void testIssueTokenWithSymmetricKey() {
+    withSymmKey.issueToken(ISSUER, null, null, null, null);
   }
 
   // ---------------------------------------------------------------------------//
 
   @Test
   void testIssueTokenWithoutKey() {
+    withoutKey.issueToken(ISSUER, null, null, null, null);
   }
 
 }
