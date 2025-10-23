@@ -21,13 +21,10 @@ public class JwtUtilTests {
 
   @BeforeAll
   void setup() {
-    // Generate RSA key pair
-    KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
 
-    // Generate AES symmetric key
+    KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
     SecretKey symmKey = Jwts.SIG.HS256.key().build();
 
-    // Construct JwtUtil instances
     withAsymmKeys = new JwtUtil(keyPair.getPrivate(), keyPair.getPublic(), ISSUER);
     withSymmKey = new JwtUtil(symmKey, symmKey, ISSUER);
     withoutKey = new JwtUtil(null, null, ISSUER);
