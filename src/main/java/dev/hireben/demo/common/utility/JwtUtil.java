@@ -34,14 +34,14 @@ public class JwtUtil {
         : () -> Jwts.builder().signWith(signKey).issuer(issuer);
 
     if (verifyKey == null) {
-      this.secured = false;
-      this.parser = Jwts.parser().build();
+      secured = false;
+      parser = Jwts.parser().build();
     } else if (verifyKey instanceof SecretKey symmetricKey) {
-      this.secured = true;
-      this.parser = Jwts.parser().verifyWith(symmetricKey).build();
+      secured = true;
+      parser = Jwts.parser().verifyWith(symmetricKey).build();
     } else if (verifyKey instanceof PublicKey publicKey) {
-      this.secured = true;
-      this.parser = Jwts.parser().verifyWith(publicKey).build();
+      secured = true;
+      parser = Jwts.parser().verifyWith(publicKey).build();
     } else {
       throw new IllegalArgumentException(
           String.format("Unsupported key type for verification: %s", verifyKey.getClass()));
