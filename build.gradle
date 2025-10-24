@@ -30,7 +30,7 @@ dependencies {
   runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
   runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
 
-  // annotationProcessor 'org.projectlombok:lombok'
+  annotationProcessor 'org.projectlombok:lombok:1.18.40'
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -46,7 +46,6 @@ publishing {
 		mavenLocal()
 	}
 }
-
 
 tasks.named('test') {
   useJUnitPlatform()
