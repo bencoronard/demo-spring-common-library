@@ -35,7 +35,7 @@ public class JwtUtil {
 
     if (verifyKey == null) {
       secured = false;
-      parser = Jwts.parser().build();
+      parser = Jwts.parser().unsecured().build();
     } else if (verifyKey instanceof SecretKey symmetricKey) {
       secured = true;
       parser = Jwts.parser().verifyWith(symmetricKey).build();

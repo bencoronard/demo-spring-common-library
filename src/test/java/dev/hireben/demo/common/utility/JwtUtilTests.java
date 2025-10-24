@@ -1,21 +1,27 @@
 package dev.hireben.demo.common.utility;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.security.KeyPair;
 import javax.crypto.SecretKey;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class JwtUtilTests {
 
-  private final String ISSUER = this.getClass().getName();
   private JwtUtil withAsymmKeys;
   private JwtUtil withSymmKey;
   private JwtUtil withoutKey;
+
+  // -----------------------------------------------------------------------------
+
+  private final String ISSUER = this.getClass().getSimpleName();
 
   // =============================================================================
 
@@ -33,22 +39,42 @@ public class JwtUtilTests {
   // =============================================================================
 
   @Test
-  void testIssueTokenWithAsymmetricKeys() {
-    withAsymmKeys.issueToken(ISSUER, null, null, null, null);
+  void testIssueAndParseTokenWithAsymmetricKeys() {
+    String token = withAsymmKeys.issueToken(null, null, null, null, null);
+    assertThat(token).isNotBlank();
+
+    Claims claims = withAsymmKeys.parseToken(token);
+    assertNotNull(claims);
+    assertNotNull(claims.getId());
+    assertNotNull(claims.getIssuedAt());
   }
 
   // -----------------------------------------------------------------------------
 
   @Test
-  void testIssueTokenWithSymmetricKey() {
-    withSymmKey.issueToken(ISSUER, null, null, null, null);
+  void testIssueAndParseTokenWithSymmetricKey() {
+    String token = withSymmKey.issueToken(null, null, null, null, null);
+    assertThat(token).isNotBlank();
+
+    Claims claims = withSymmKey.parseToken(token);
+    assertNotNull(claims);
+    assertNotNull(claims.getId());
+    assertNotNull(claims.getIssuedAt());
   }
 
   // -----------------------------------------------------------------------------
 
   @Test
-  void testIssueTokenWithoutKey() {
-    withoutKey.issueToken(ISSUER, null, null, null, null);
+  void testIssueAndParseTokenWithoutKey() {
+    String token = withoutKey.issueToken(null, null, null, null, null);
+    assertThat(token).isNotBlank();
+
+    Claims claims = withoutKey.parseToken(token);
+    assertNotNull(claims);
+    assertNotNull(claims.getId());
+    assertNotNull(claims.getIssuedAt());
   }
+
+  // -----------------------------------------------------------------------------
 
 }
