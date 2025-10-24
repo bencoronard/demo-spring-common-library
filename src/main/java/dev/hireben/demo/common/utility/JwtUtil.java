@@ -36,16 +36,16 @@ public class JwtUtil {
     if (verifyKey == null) {
       secured = false;
       parser = Jwts.parser().unsecured().build();
-    } else if (verifyKey instanceof SecretKey symmetricKey) {
-      secured = true;
-      parser = Jwts.parser().verifyWith(symmetricKey).build();
-    } else if (verifyKey instanceof PublicKey publicKey) {
-      secured = true;
-      parser = Jwts.parser().verifyWith(publicKey).build();
-    } else {
-      throw new IllegalArgumentException(
-          String.format("Unsupported key type for verification: %s", verifyKey.getClass()));
+      return;
     }
+
+    secured = true;
+    parser = switch (verifyKey) {
+      case SecretKey symmetricKey -> Jwts.parser().verifyWith(symmetricKey).build();
+      case PublicKey publicKey -> Jwts.parser().verifyWith(publicKey).build();
+      default -> throw new IllegalArgumentException(
+          String.format("Unsupported key type for verification: %s", verifyKey.getClass()));
+    };
   }
 
   // =============================================================================
