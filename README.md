@@ -1,1 +1,1 @@
-./gradlew publishToMavenLocal --no-configuration-cache
+./gradlew publishToMavenLocal
