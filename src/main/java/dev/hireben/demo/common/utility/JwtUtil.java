@@ -50,7 +50,7 @@ public final class JwtUtil {
 
   // =============================================================================
 
-  public final String issueToken(
+  public String issueToken(
       String subject,
       Collection<String> audiences,
       Map<String, Object> claims,
@@ -92,7 +92,7 @@ public final class JwtUtil {
 
   // -----------------------------------------------------------------------------
 
-  public final Claims parseToken(String token) {
+  public Claims parseToken(String token) {
     return secured ? parser.parseSignedClaims(token).getPayload()
         : parser.parseUnsecuredClaims(token).getPayload();
   }

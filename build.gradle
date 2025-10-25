@@ -28,6 +28,8 @@ dependencies {
 
   compileOnly 'org.springframework:spring-webmvc'
   compileOnly 'jakarta.servlet:jakarta.servlet-api'
+  compileOnly 'jakarta.validation:jakarta.validation-api'
+  compileOnly 'com.fasterxml.jackson.core:jackson-databind'
   compileOnly 'org.slf4j:slf4j-api'
 
   api 'io.jsonwebtoken:jjwt-api:0.13.0'

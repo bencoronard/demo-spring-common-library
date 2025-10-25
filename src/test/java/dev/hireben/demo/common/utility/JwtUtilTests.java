@@ -13,7 +13,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class JwtUtilTests {
+public final class JwtUtilTests {
 
   private JwtUtil withAsymmKeys;
   private JwtUtil withSymmKey;
