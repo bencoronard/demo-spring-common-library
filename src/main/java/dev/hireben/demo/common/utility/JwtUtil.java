@@ -93,7 +93,8 @@ public class JwtUtil {
   // -----------------------------------------------------------------------------
 
   public Claims parseToken(String token) {
-    return secured ? parser.parseSignedClaims(token).getPayload() : parser.parseUnsecuredClaims(token).getPayload();
+    return secured ? parser.parseSignedClaims(token).getPayload()
+        : parser.parseUnsecuredClaims(token).getPayload();
   }
 
 }
