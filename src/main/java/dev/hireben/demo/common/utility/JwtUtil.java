@@ -17,7 +17,7 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 
-public class JwtUtil {
+public final class JwtUtil {
 
   private final Supplier<JwtBuilder> builder;
   private final JwtParser parser;
@@ -50,7 +50,7 @@ public class JwtUtil {
 
   // =============================================================================
 
-  public String issueToken(
+  public final String issueToken(
       String subject,
       Collection<String> audiences,
       Map<String, Object> claims,
@@ -92,7 +92,7 @@ public class JwtUtil {
 
   // -----------------------------------------------------------------------------
 
-  public Claims parseToken(String token) {
+  public final Claims parseToken(String token) {
     return secured ? parser.parseSignedClaims(token).getPayload()
         : parser.parseUnsecuredClaims(token).getPayload();
   }
