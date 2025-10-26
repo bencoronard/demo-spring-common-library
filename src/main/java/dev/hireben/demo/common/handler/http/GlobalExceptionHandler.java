@@ -41,7 +41,7 @@ public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHand
   // =============================================================================
 
   @Override
-  protected ResponseEntity<Object> handleMethodArgumentNotValid(
+  protected final ResponseEntity<Object> handleMethodArgumentNotValid(
       MethodArgumentNotValidException ex,
       HttpHeaders headers,
       HttpStatusCode status,
@@ -64,7 +64,7 @@ public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHand
   // -----------------------------------------------------------------------------
 
   @ExceptionHandler(ConstraintViolationException.class)
-  protected ResponseEntity<Object> handleConstraintViolation(
+  final ResponseEntity<Object> handleConstraintViolation(
       ConstraintViolationException ex,
       WebRequest request) {
 
@@ -87,7 +87,7 @@ public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHand
   // -----------------------------------------------------------------------------
 
   @ExceptionHandler(MissingRequestHeaderException.class)
-  protected ResponseEntity<Object> handleMissingRequestHeader(
+  final ResponseEntity<Object> handleMissingRequestHeader(
       MissingRequestHeaderException ex,
       WebRequest request) {
 
