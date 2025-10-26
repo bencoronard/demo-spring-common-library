@@ -24,6 +24,7 @@ public final class ApiKeyFilter extends OncePerRequestFilter {
       FilterChain filterChain) throws ServletException, IOException {
 
     String apiKey = request.getHeader("X-Api-Key");
+
     if (apiKey == null || apiKey.isBlank()) {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing API key");
       return;
