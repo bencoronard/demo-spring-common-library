@@ -75,6 +75,4 @@ public final class JwtUtilTests {
     assertNotNull(claims.getIssuedAt());
   }
 
-  // -----------------------------------------------------------------------------
-
 }
