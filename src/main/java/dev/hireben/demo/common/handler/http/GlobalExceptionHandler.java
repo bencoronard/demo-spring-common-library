@@ -1,5 +1,6 @@
 package dev.hireben.demo.common.handler.http;
 
+import java.net.SocketTimeoutException;
 import java.time.Instant;
 import java.util.Collection;
 
@@ -64,7 +65,7 @@ public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHand
   // -----------------------------------------------------------------------------
 
   @ExceptionHandler(ConstraintViolationException.class)
-  final ResponseEntity<Object> handleConstraintViolation(
+  private ResponseEntity<Object> handleConstraintViolation(
       ConstraintViolationException ex,
       WebRequest request) {
 
@@ -87,7 +88,7 @@ public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHand
   // -----------------------------------------------------------------------------
 
   @ExceptionHandler(MissingRequestHeaderException.class)
-  final ResponseEntity<Object> handleMissingRequestHeader(
+  private ResponseEntity<Object> handleMissingRequestHeader(
       MissingRequestHeaderException ex,
       WebRequest request) {
 
@@ -96,6 +97,20 @@ public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHand
     String message = String.format("Missing HTTP header: %s", ex.getHeaderName());
 
     ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, message);
+
+    return createResponseEntity(problemDetail, HttpHeaders.EMPTY, status, request);
+  }
+
+  // -----------------------------------------------------------------------------
+
+  @ExceptionHandler(SocketTimeoutException.class)
+  private ResponseEntity<Object> handleSocketTimeout(
+      SocketTimeoutException ex,
+      WebRequest request) {
+
+    HttpStatus status = HttpStatus.BAD_REQUEST;
+
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, "Gateway timed out");
 
     return createResponseEntity(problemDetail, HttpHeaders.EMPTY, status, request);
   }
