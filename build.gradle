@@ -3,7 +3,7 @@ plugins {
   id 'maven-publish'
 }
 
-group = 'dev.hireben.demo.spring'
+group = 'dev.hireben.demo'
 version = 'SNAPSHOT'
 description = 'Demo Spring Boot common library project'
 
