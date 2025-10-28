@@ -8,8 +8,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import dev.hireben.demo.common.constant.MessageHeader;
 import dev.hireben.demo.common.http.annotation.AuthorizationHeader;
-import dev.hireben.demo.common.http.constant.ApiHeaderKey;
 import dev.hireben.demo.common.utility.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -36,10 +36,10 @@ public final class AuthorizationHeaderResolver implements HandlerMethodArgumentR
       NativeWebRequest webRequest,
       @Nullable WebDataBinderFactory binderFactory) throws Exception {
 
-    String header = webRequest.getHeader(ApiHeaderKey.Authorization);
+    String header = webRequest.getHeader(MessageHeader.Authorization);
 
     if (header == null || header.isBlank()) {
-      throw new MissingRequestHeaderException(ApiHeaderKey.Authorization, parameter);
+      throw new MissingRequestHeaderException(MessageHeader.Authorization, parameter);
     }
 
     return jwtUtil.parseToken(header.substring("Bearer ".length()));

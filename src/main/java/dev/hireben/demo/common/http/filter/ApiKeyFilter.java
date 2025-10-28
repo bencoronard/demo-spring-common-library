@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import dev.hireben.demo.common.http.constant.ApiHeaderKey;
+import dev.hireben.demo.common.constant.MessageHeader;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class ApiKeyFilter extends OncePerRequestFilter {
 
-  private final String API_KEY_INTERNAL;
+  private final String expectedApiKey;
 
   // =============================================================================
 
@@ -24,14 +24,14 @@ public final class ApiKeyFilter extends OncePerRequestFilter {
       HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
 
-    String apiKey = request.getHeader(ApiHeaderKey.API_KEY);
+    String reqApiKey = request.getHeader(MessageHeader.API_KEY);
 
-    if (apiKey == null || apiKey.isBlank()) {
+    if (reqApiKey == null || reqApiKey.isBlank()) {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing API key");
       return;
     }
 
-    if (!apiKey.strip().equals(API_KEY_INTERNAL)) {
+    if (!reqApiKey.strip().equals(expectedApiKey)) {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API key");
       return;
     }
