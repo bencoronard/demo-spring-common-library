@@ -1,4 +1,4 @@
-package dev.hireben.demo.common.annotation;
+package dev.hireben.demo.common.rest.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

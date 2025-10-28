@@ -1,4 +1,4 @@
-package dev.hireben.demo.common.filter.http;
+package dev.hireben.demo.common.rest.filter;
 
 import org.springframework.web.filter.AbstractRequestLoggingFilter;
 import jakarta.servlet.http.HttpServletRequest;
