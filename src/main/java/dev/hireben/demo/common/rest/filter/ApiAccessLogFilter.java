@@ -31,6 +31,7 @@ public final class ApiAccessLogFilter extends OncePerRequestFilter {
     try {
       filterChain.doFilter(request, response);
     } finally {
+
       if (!isAsyncStarted(request)) {
         return;
       }
