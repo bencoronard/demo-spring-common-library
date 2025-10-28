@@ -9,6 +9,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import dev.hireben.demo.common.rest.annotation.AuthorizationHeader;
+import dev.hireben.demo.common.rest.constant.RestHeader;
 import dev.hireben.demo.common.utility.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +36,10 @@ public final class AuthorizationHeaderResolver implements HandlerMethodArgumentR
       NativeWebRequest webRequest,
       @Nullable WebDataBinderFactory binderFactory) throws Exception {
 
-    String header = webRequest.getHeader("Authorization");
+    String header = webRequest.getHeader(RestHeader.Authorization);
 
     if (header == null || header.isBlank()) {
-      throw new MissingRequestHeaderException("Authorization", parameter);
+      throw new MissingRequestHeaderException(RestHeader.Authorization, parameter);
     }
 
     return jwtUtil.parseToken(header.substring("Bearer ".length()));
