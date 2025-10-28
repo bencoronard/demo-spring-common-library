@@ -1,10 +1,10 @@
-package dev.hireben.demo.common.rest.filter;
+package dev.hireben.demo.common.http.filter;
 
 import java.io.IOException;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import dev.hireben.demo.common.rest.constant.RestHeader;
+import dev.hireben.demo.common.http.constant.RestHeader;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

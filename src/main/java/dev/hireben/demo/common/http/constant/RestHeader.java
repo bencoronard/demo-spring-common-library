@@ -1,4 +1,4 @@
-package dev.hireben.demo.common.rest.constant;
+package dev.hireben.demo.common.http.constant;
 
 import lombok.experimental.UtilityClass;
 

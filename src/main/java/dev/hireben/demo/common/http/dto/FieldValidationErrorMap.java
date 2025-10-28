@@ -1,4 +1,4 @@
-package dev.hireben.demo.common.rest.dto;
+package dev.hireben.demo.common.http.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 

@@ -1,4 +1,4 @@
-package dev.hireben.demo.common.rest.annotation.resolver;
+package dev.hireben.demo.common.http.annotation.resolver;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.core.MethodParameter;
@@ -8,8 +8,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import dev.hireben.demo.common.rest.annotation.AuthorizationHeader;
-import dev.hireben.demo.common.rest.constant.RestHeader;
+import dev.hireben.demo.common.http.annotation.AuthorizationHeader;
+import dev.hireben.demo.common.http.constant.RestHeader;
 import dev.hireben.demo.common.utility.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;

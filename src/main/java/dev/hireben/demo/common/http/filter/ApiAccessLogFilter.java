@@ -1,4 +1,4 @@
-package dev.hireben.demo.common.rest.filter;
+package dev.hireben.demo.common.http.filter;
 
 import java.io.IOException;
 
