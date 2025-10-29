@@ -1,4 +1,4 @@
-package dev.hireben.demo.common.http.handler;
+package dev.hireben.demo.common_libs.http.handler;
 
 import java.net.SocketTimeoutException;
 import java.time.Instant;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import dev.hireben.demo.common.http.dto.FieldValidationErrorMap;
+import dev.hireben.demo.common_libs.http.dto.FieldValidationErrorMap;
 import jakarta.validation.ConstraintViolationException;
 
 public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHandler {

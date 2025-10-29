@@ -1,4 +1,4 @@
-package dev.hireben.demo.common.constant;
+package dev.hireben.demo.common_libs.constant;
 
 import lombok.experimental.UtilityClass;
 

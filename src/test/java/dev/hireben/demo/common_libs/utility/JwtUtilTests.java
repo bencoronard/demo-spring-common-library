@@ -1,4 +1,4 @@
-package dev.hireben.demo.common.utility;
+package dev.hireben.demo.common_libs.utility;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.security.KeyPair;

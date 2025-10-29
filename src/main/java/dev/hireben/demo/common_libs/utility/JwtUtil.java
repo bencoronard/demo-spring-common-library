@@ -1,4 +1,4 @@
-package dev.hireben.demo.common.utility;
+package dev.hireben.demo.common_libs.utility;
 
 import java.security.Key;
 import java.security.PublicKey;
