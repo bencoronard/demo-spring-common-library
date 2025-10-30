@@ -19,6 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import dev.hireben.demo.common_libs.http.dto.FieldValidationErrorMap;
+import io.jsonwebtoken.JwtException;
 import io.micrometer.tracing.Tracer;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AccessLevel;
@@ -28,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   private final Tracer tracer;
+
+  // =============================================================================
 
   @Override
   protected final @NonNull ResponseEntity<Object> createResponseEntity(
@@ -116,6 +119,20 @@ public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHand
     HttpStatus status = HttpStatus.BAD_REQUEST;
 
     ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, "Gateway timed out");
+
+    return createResponseEntity(problemDetail, HttpHeaders.EMPTY, status, request);
+  }
+
+  // -----------------------------------------------------------------------------
+
+  @ExceptionHandler(JwtException.class)
+  private ResponseEntity<Object> handleJwtValidationFailure(
+      JwtException ex,
+      WebRequest request) {
+
+    HttpStatus status = HttpStatus.UNAUTHORIZED;
+
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, "Authorization failed");
 
     return createResponseEntity(problemDetail, HttpHeaders.EMPTY, status, request);
   }
