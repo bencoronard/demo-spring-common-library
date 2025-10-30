@@ -20,17 +20,19 @@ configurations {
 }
  
 repositories {
+  mavenLocal()
   mavenCentral()
 }
 
 dependencies {
-  implementation platform('org.springframework.boot:spring-boot-dependencies:4.0.0-RC1')
+  implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.7')
 
   compileOnly 'org.springframework:spring-webmvc'
   compileOnly 'jakarta.servlet:jakarta.servlet-api'
   compileOnly 'jakarta.validation:jakarta.validation-api'
   compileOnly 'com.fasterxml.jackson.core:jackson-databind'
   compileOnly 'org.slf4j:slf4j-api'
+  compileOnly 'io.micrometer:micrometer-tracing-bridge-brave'
 
   api 'io.jsonwebtoken:jjwt-api:0.13.0'
   runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
