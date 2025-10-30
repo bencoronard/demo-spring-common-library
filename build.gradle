@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'dev.hireben.demo'
-version = 'SNAPSHOT'
+version = 'latest'
 description = 'Demo Spring Boot common library project'
 
 java {
@@ -25,7 +25,10 @@ repositories {
 }
 
 dependencies {
-  implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.7')
+  implementation platform('dev.hireben.demo:common-dependencies:latest')
+  annotationProcessor platform('dev.hireben.demo:common-dependencies:latest')
+
+  implementation 'org.apache.httpcomponents.client5:httpclient5'
 
   compileOnly 'org.springframework:spring-webmvc'
   compileOnly 'jakarta.servlet:jakarta.servlet-api'
@@ -34,33 +37,16 @@ dependencies {
   compileOnly 'org.slf4j:slf4j-api'
   compileOnly 'io.micrometer:micrometer-tracing-bridge-brave'
 
-  api 'io.jsonwebtoken:jjwt-api:0.13.0'
-  runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
-  runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
+  api 'io.jsonwebtoken:jjwt-api'
+  runtimeOnly 'io.jsonwebtoken:jjwt-impl'
+  runtimeOnly 'io.jsonwebtoken:jjwt-jackson'
 
-  annotationProcessor 'org.projectlombok:lombok:1.18.40'
+  annotationProcessor 'org.projectlombok:lombok'
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-publishing {
-  publications {
-		maven(MavenPublication) {
-			from components.java
-		}
-	}
-	repositories {
-		mavenLocal()
-	}
-}
-
 tasks.named('test') {
   useJUnitPlatform()
-}
-
-tasks.register('install') {
-  dependsOn 'publishToMavenLocal'
-  description = 'Install library to local .m2 repository'
-  group = 'publishing'
 }
