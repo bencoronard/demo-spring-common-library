@@ -1,7 +1,8 @@
 package dev.hireben.demo.common_libs.http.annotation.resolver;
 
-import org.jspecify.annotations.Nullable;
 import org.springframework.core.MethodParameter;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -22,7 +23,7 @@ public final class AuthorizationHeaderResolver implements HandlerMethodArgumentR
   // =============================================================================
 
   @Override
-  public boolean supportsParameter(MethodParameter parameter) {
+  public boolean supportsParameter(@NonNull MethodParameter parameter) {
     return parameter.getParameterType().equals(Claims.class)
         && parameter.hasParameterAnnotation(AuthorizationHeader.class);
   }
@@ -30,10 +31,10 @@ public final class AuthorizationHeaderResolver implements HandlerMethodArgumentR
   // -----------------------------------------------------------------------------
 
   @Override
-  public @Nullable Object resolveArgument(
-      MethodParameter parameter,
+  public Object resolveArgument(
+      @NonNull MethodParameter parameter,
       @Nullable ModelAndViewContainer mavContainer,
-      NativeWebRequest webRequest,
+      @NonNull NativeWebRequest webRequest,
       @Nullable WebDataBinderFactory binderFactory) throws Exception {
 
     String header = webRequest.getHeader(MessageHeader.Authorization);

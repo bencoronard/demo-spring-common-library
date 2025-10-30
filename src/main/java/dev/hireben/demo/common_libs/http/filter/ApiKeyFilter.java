@@ -2,6 +2,7 @@ package dev.hireben.demo.common_libs.http.filter;
 
 import java.io.IOException;
 
+import org.springframework.lang.NonNull;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import dev.hireben.demo.common_libs.constant.MessageHeader;
@@ -20,9 +21,9 @@ public final class ApiKeyFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(
-      HttpServletRequest request,
-      HttpServletResponse response,
-      FilterChain filterChain) throws ServletException, IOException {
+      @NonNull HttpServletRequest request,
+      @NonNull HttpServletResponse response,
+      @NonNull FilterChain filterChain) throws ServletException, IOException {
 
     String reqApiKey = request.getHeader(MessageHeader.API_KEY);
 

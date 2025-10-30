@@ -3,13 +3,14 @@ package dev.hireben.demo.common_libs.http.handler;
 import java.net.SocketTimeoutException;
 import java.time.Instant;
 import java.util.Collection;
-import org.jspecify.annotations.Nullable;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
@@ -18,21 +19,26 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import dev.hireben.demo.common_libs.http.dto.FieldValidationErrorMap;
+import io.micrometer.tracing.Tracer;
 import jakarta.validation.ConstraintViolationException;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+  private final Tracer tracer;
+
   @Override
-  protected final ResponseEntity<Object> createResponseEntity(
+  protected final @NonNull ResponseEntity<Object> createResponseEntity(
       @Nullable Object body,
-      HttpHeaders headers,
-      HttpStatusCode statusCode,
-      WebRequest request) {
+      @NonNull HttpHeaders headers,
+      @NonNull HttpStatusCode statusCode,
+      @NonNull WebRequest request) {
 
     if (body instanceof ProblemDetail problemDetail) {
       problemDetail.setProperty("timestamp", Instant.now());
-      // TODO Add trace from io.micrometer
-      problemDetail.setProperty("trace", null);
+      problemDetail.setProperty("trace", tracer.currentTraceContext().context().traceId());
     }
 
     return super.createResponseEntity(body, headers, statusCode, request);
@@ -42,10 +48,10 @@ public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHand
 
   @Override
   protected final ResponseEntity<Object> handleMethodArgumentNotValid(
-      MethodArgumentNotValidException ex,
-      HttpHeaders headers,
-      HttpStatusCode status,
-      WebRequest request) {
+      @NonNull MethodArgumentNotValidException ex,
+      @NonNull HttpHeaders headers,
+      @NonNull HttpStatusCode status,
+      @NonNull WebRequest request) {
 
     ProblemDetail problemDetail = ex.updateAndGetBody(getMessageSource(), LocaleContextHolder.getLocale());
 
