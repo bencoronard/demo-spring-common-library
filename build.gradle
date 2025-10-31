@@ -24,9 +24,13 @@ repositories {
   mavenCentral()
 }
 
+ext {
+  set('commonBom', 'dev.hireben.demo:common-dependencies:latest')
+}
+
 dependencies {
-  implementation platform('dev.hireben.demo:common-dependencies:latest')
-  annotationProcessor platform('dev.hireben.demo:common-dependencies:latest')
+  implementation platform("${commonBom}")
+  annotationProcessor platform("${commonBom}")
 
   implementation 'org.apache.httpcomponents.client5:httpclient5'
 
