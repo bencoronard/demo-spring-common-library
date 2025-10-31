@@ -11,14 +11,14 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import dev.hireben.demo.common_libs.constant.MessageHeader;
 import dev.hireben.demo.common_libs.http.annotation.AuthorizationHeader;
-import dev.hireben.demo.common_libs.utility.JwtUtil;
+import dev.hireben.demo.common_libs.utility.JwtClient;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public final class AuthorizationHeaderResolver implements HandlerMethodArgumentResolver {
 
-  private final JwtUtil jwtUtil;
+  private final JwtClient jwtClient;
 
   // =============================================================================
 
@@ -43,7 +43,7 @@ public final class AuthorizationHeaderResolver implements HandlerMethodArgumentR
       throw new MissingRequestHeaderException(MessageHeader.Authorization, parameter);
     }
 
-    return jwtUtil.parseToken(header.substring("Bearer ".length()));
+    return jwtClient.parseToken(header.substring("Bearer ".length()));
   }
 
 }

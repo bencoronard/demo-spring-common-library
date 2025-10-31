@@ -13,11 +13,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-final class JwtUtilTests {
+final class JwtClientTests {
 
-  private JwtUtil withAsymmKeys;
-  private JwtUtil withSymmKey;
-  private JwtUtil withoutKey;
+  private JwtClient withoutKey;
+  private JwtClient withSymmKey;
+  private JwtClient withAsymmKeys;
 
   // -----------------------------------------------------------------------------
 
@@ -28,12 +28,12 @@ final class JwtUtilTests {
   @BeforeAll
   void setup() {
 
-    KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
     SecretKey symmKey = Jwts.SIG.HS256.key().build();
+    KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
 
-    withAsymmKeys = new JwtUtil(keyPair.getPrivate(), keyPair.getPublic(), ISSUER);
-    withSymmKey = new JwtUtil(symmKey, symmKey, ISSUER);
-    withoutKey = new JwtUtil(null, null, ISSUER);
+    withoutKey = new JwtClient(ISSUER);
+    withSymmKey = new JwtClient(ISSUER, symmKey);
+    withAsymmKeys = new JwtClient(ISSUER, keyPair);
   }
 
   // =============================================================================

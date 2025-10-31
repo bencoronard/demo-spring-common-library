@@ -1,7 +1,6 @@
 package dev.hireben.demo.common_libs.utility;
 
-import java.security.Key;
-import java.security.PublicKey;
+import java.security.KeyPair;
 import java.time.Instant;
 import java.time.temporal.TemporalAmount;
 import java.util.Collection;
@@ -17,7 +16,7 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 
-public final class JwtUtil {
+public final class JwtClient {
 
   private final Supplier<JwtBuilder> builder;
   private final JwtParser parser;
@@ -25,27 +24,26 @@ public final class JwtUtil {
 
   // =============================================================================
 
-  public JwtUtil(
-      Key signKey,
-      Key verifyKey,
-      String issuer) {
+  public JwtClient(String issuer) {
+    secured = false;
+    builder = () -> Jwts.builder().issuer(issuer);
+    parser = Jwts.parser().unsecured().build();
+  }
 
-    builder = signKey == null ? () -> Jwts.builder().issuer(issuer)
-        : () -> Jwts.builder().signWith(signKey).issuer(issuer);
+  // -----------------------------------------------------------------------------
 
-    if (verifyKey == null) {
-      secured = false;
-      parser = Jwts.parser().unsecured().build();
-      return;
-    }
-
+  public JwtClient(String issuer, SecretKey symmetricKey) {
     secured = true;
-    parser = switch (verifyKey) {
-      case SecretKey symmetricKey -> Jwts.parser().verifyWith(symmetricKey).build();
-      case PublicKey publicKey -> Jwts.parser().verifyWith(publicKey).build();
-      default -> throw new IllegalArgumentException(
-          String.format("Unsupported key type for verification: %s", verifyKey.getClass()));
-    };
+    builder = () -> Jwts.builder().signWith(symmetricKey).issuer(issuer);
+    parser = Jwts.parser().verifyWith(symmetricKey).build();
+  }
+
+  // -----------------------------------------------------------------------------
+
+  public JwtClient(String issuer, KeyPair keyPair) {
+    secured = true;
+    builder = () -> Jwts.builder().signWith(keyPair.getPrivate()).issuer(issuer);
+    parser = Jwts.parser().verifyWith(keyPair.getPublic()).build();
   }
 
   // =============================================================================
