@@ -1,6 +1,9 @@
 package dev.hireben.demo.common_libs.utility;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.security.KeyPair;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -54,6 +57,19 @@ final class JwtClientTests {
     assertNotNull(claims);
     assertNotNull(claims.getId());
     assertNotNull(claims.getIssuedAt());
+  }
+
+  // -----------------------------------------------------------------------------
+
+  @Test
+  void testIssueTokenWithAsymmetricKeyShouldReturnNull() {
+    KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
+    KeyPair keyPairHalved = new KeyPair(keyPair.getPublic(), null);
+
+    JwtClient withPublicKey = new JwtClient(ISSUER, keyPairHalved);
+
+    String token = withPublicKey.issueToken(null, null, null, null, null);
+    assertThat(token).isNull();
   }
 
 }

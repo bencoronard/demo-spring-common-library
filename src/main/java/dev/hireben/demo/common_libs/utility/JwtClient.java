@@ -42,7 +42,7 @@ public final class JwtClient {
 
   public JwtClient(String issuer, KeyPair keyPair) {
     secured = true;
-    builder = () -> Jwts.builder().signWith(keyPair.getPrivate()).issuer(issuer);
+    builder = keyPair.getPrivate() != null ? () -> Jwts.builder().signWith(keyPair.getPrivate()).issuer(issuer) : null;
     parser = Jwts.parser().verifyWith(keyPair.getPublic()).build();
   }
 
@@ -55,10 +55,14 @@ public final class JwtClient {
       TemporalAmount ttl,
       Instant nbf) {
 
+    if (builder == null) {
+      return null;
+    }
+
     Instant now = Instant.now();
     Instant tokenEffective = now;
 
-    JwtBuilder jwt = this.builder.get();
+    JwtBuilder jwt = builder.get();
 
     if (nbf != null) {
       tokenEffective = nbf;
