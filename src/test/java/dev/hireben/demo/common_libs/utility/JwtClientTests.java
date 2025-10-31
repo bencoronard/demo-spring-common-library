@@ -1,11 +1,7 @@
 package dev.hireben.demo.common_libs.utility;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.security.KeyPair;
-import javax.crypto.SecretKey;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -15,26 +11,11 @@ import io.jsonwebtoken.Jwts;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 final class JwtClientTests {
 
-  private JwtClient withoutKey;
-  private JwtClient withSymmKey;
-  private JwtClient withAsymmKeys;
-
-  // -----------------------------------------------------------------------------
-
   private final String ISSUER = this.getClass().getSimpleName();
 
-  // =============================================================================
-
-  @BeforeAll
-  void setup() {
-
-    SecretKey symmKey = Jwts.SIG.HS256.key().build();
-    KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
-
-    withoutKey = new JwtClient(ISSUER);
-    withSymmKey = new JwtClient(ISSUER, symmKey);
-    withAsymmKeys = new JwtClient(ISSUER, keyPair);
-  }
+  private final JwtClient withoutKey = new JwtClient(ISSUER);
+  private final JwtClient withSymmKey = new JwtClient(ISSUER, Jwts.SIG.HS256.key().build());
+  private final JwtClient withAsymmKeys = new JwtClient(ISSUER, Jwts.SIG.RS256.keyPair().build());
 
   // =============================================================================
 

@@ -32,10 +32,10 @@ public final class JwtClient {
 
   // -----------------------------------------------------------------------------
 
-  public JwtClient(String issuer, SecretKey symmetricKey) {
+  public JwtClient(String issuer, SecretKey key) {
     secured = true;
-    builder = () -> Jwts.builder().signWith(symmetricKey).issuer(issuer);
-    parser = Jwts.parser().verifyWith(symmetricKey).build();
+    builder = () -> Jwts.builder().signWith(key).issuer(issuer);
+    parser = Jwts.parser().verifyWith(key).build();
   }
 
   // -----------------------------------------------------------------------------
