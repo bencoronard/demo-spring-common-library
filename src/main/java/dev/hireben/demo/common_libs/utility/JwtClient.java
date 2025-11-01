@@ -56,7 +56,8 @@ public final class JwtClient {
       Instant nbf) {
 
     if (builder == null) {
-      return null;
+      throw new UnsupportedOperationException(
+          "This JwtClient instance cannot issue tokens because it was initialized with a public key only.");
     }
 
     Instant now = Instant.now();
