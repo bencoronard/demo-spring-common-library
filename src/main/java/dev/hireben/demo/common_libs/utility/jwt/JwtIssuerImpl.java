@@ -1,64 +1,54 @@
-package dev.hireben.demo.common_libs.utility;
+package dev.hireben.demo.common_libs.utility.jwt;
 
-import java.security.KeyPair;
+import java.security.PrivateKey;
 import java.time.Instant;
 import java.time.temporal.TemporalAmount;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Supplier;
 
 import javax.crypto.SecretKey;
 
-import io.jsonwebtoken.Claims;
+import dev.hireben.demo.common_libs.utility.jwt.api.JwtIssuer;
 import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 
-public final class JwtClient {
+final class JwtIssuerImpl implements JwtIssuer {
 
   private final Supplier<JwtBuilder> builder;
-  private final JwtParser parser;
-  private final boolean secured;
 
   // =============================================================================
 
-  public JwtClient(String issuer) {
-    secured = false;
+  JwtIssuerImpl(String issuer) {
     builder = () -> Jwts.builder().issuer(issuer);
-    parser = Jwts.parser().unsecured().build();
   }
 
   // -----------------------------------------------------------------------------
 
-  public JwtClient(String issuer, SecretKey key) {
-    secured = true;
+  JwtIssuerImpl(String issuer, SecretKey key) {
+    Objects.requireNonNull(key, "Symmetric key must not be null");
     builder = () -> Jwts.builder().signWith(key).issuer(issuer);
-    parser = Jwts.parser().verifyWith(key).build();
   }
 
   // -----------------------------------------------------------------------------
 
-  public JwtClient(String issuer, KeyPair keyPair) {
-    secured = true;
-    builder = keyPair.getPrivate() != null ? () -> Jwts.builder().signWith(keyPair.getPrivate()).issuer(issuer) : null;
-    parser = Jwts.parser().verifyWith(keyPair.getPublic()).build();
+  JwtIssuerImpl(String issuer, PrivateKey key) {
+    Objects.requireNonNull(key, "Private key must not be null");
+    builder = () -> Jwts.builder().signWith(key).issuer(issuer);
   }
 
   // =============================================================================
 
+  @Override
   public String issueToken(
       String subject,
       Collection<String> audiences,
       Map<String, Object> claims,
       TemporalAmount ttl,
       Instant nbf) {
-
-    if (builder == null) {
-      throw new UnsupportedOperationException(
-          "This JwtClient instance cannot issue tokens because it was initialized with a public key only.");
-    }
 
     Instant now = Instant.now();
     Instant tokenEffective = now;
@@ -91,13 +81,6 @@ public final class JwtClient {
     }
 
     return jwt.compact();
-  }
-
-  // -----------------------------------------------------------------------------
-
-  public Claims parseToken(String token) {
-    return secured ? parser.parseSignedClaims(token).getPayload()
-        : parser.parseUnsecuredClaims(token).getPayload();
   }
 
 }
