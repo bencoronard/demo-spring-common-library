@@ -22,7 +22,7 @@ import io.jsonwebtoken.Jwts;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 final class JwtImplTests {
 
-  private final String ISSUER = this.getClass().getSimpleName();
+  private final String ISSUER = getClass().getSimpleName();
   private final SecretKey SYMM_KEY = Jwts.SIG.HS256.key().build();
   private final KeyPair KEY_PAIR = Jwts.SIG.RS256.keyPair().build();
 
