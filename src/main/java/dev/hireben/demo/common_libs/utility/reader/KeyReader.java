@@ -17,10 +17,9 @@ public class KeyReader {
   public PrivateKey readRsaPrivateKeyPkcs8(String content) throws NoSuchAlgorithmException, InvalidKeySpecException {
     String keyBase64 = content
         .replace("-----BEGIN PRIVATE KEY-----", "")
-        .replaceAll("\\s+", "")
         .replace("-----END PRIVATE KEY-----", "");
 
-    byte[] key = Base64.getDecoder().decode(keyBase64);
+    byte[] key = Base64.getMimeDecoder().decode(keyBase64);
 
     KeyFactory factory = KeyFactory.getInstance("RSA");
     PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(key);
@@ -33,10 +32,9 @@ public class KeyReader {
   public PublicKey readRsaPublicKeyX509(String content) throws NoSuchAlgorithmException, InvalidKeySpecException {
     String keyBase64 = content
         .replace("-----BEGIN PUBLIC KEY-----", "")
-        .replaceAll("\\s+", "")
         .replace("-----END PUBLIC KEY-----", "");
 
-    byte[] key = Base64.getDecoder().decode(keyBase64);
+    byte[] key = Base64.getMimeDecoder().decode(keyBase64);
 
     KeyFactory factory = KeyFactory.getInstance("RSA");
     X509EncodedKeySpec spec = new X509EncodedKeySpec(key);
