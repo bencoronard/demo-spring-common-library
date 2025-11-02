@@ -16,8 +16,8 @@ import io.jsonwebtoken.Jwts;
 final class JwtClientsTests {
 
   private final String ISSUER = this.getClass().getSimpleName();
-  private final SecretKey symmKey = Jwts.SIG.HS256.key().build();
-  private final KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
+  private final SecretKey SYMM_KEY = Jwts.SIG.HS256.key().build();
+  private final KeyPair KEY_PAIR = Jwts.SIG.RS256.keyPair().build();
 
   // =============================================================================
 
@@ -35,8 +35,8 @@ final class JwtClientsTests {
 
   @Test
   void testNewVerifierWithSymmetricKey() {
-    JwtVerifier expected = new JwtVerifierImpl(symmKey);
-    JwtVerifier actual = JwtClients.newVerifierWithSymmetricKey(symmKey);
+    JwtVerifier expected = new JwtVerifierImpl(SYMM_KEY);
+    JwtVerifier actual = JwtClients.newVerifierWithSymmetricKey(SYMM_KEY);
 
     Assertions.assertThat(actual)
         .usingRecursiveComparison()
@@ -47,8 +47,8 @@ final class JwtClientsTests {
 
   @Test
   void testNewVerifierWithPublicKey() {
-    JwtVerifier expected = new JwtVerifierImpl(keyPair.getPublic());
-    JwtVerifier actual = JwtClients.newVerifierWithPublicKey(keyPair.getPublic());
+    JwtVerifier expected = new JwtVerifierImpl(KEY_PAIR.getPublic());
+    JwtVerifier actual = JwtClients.newVerifierWithPublicKey(KEY_PAIR.getPublic());
 
     Assertions.assertThat(actual)
         .usingRecursiveComparison()
@@ -71,8 +71,8 @@ final class JwtClientsTests {
 
   @Test
   void testNewIssuerWithSymmetricKey() {
-    JwtIssuer expected = new JwtIssuerImpl(ISSUER, symmKey);
-    JwtIssuer actual = JwtClients.newIssuerWithSymmetricKey(ISSUER, symmKey);
+    JwtIssuer expected = new JwtIssuerImpl(ISSUER, SYMM_KEY);
+    JwtIssuer actual = JwtClients.newIssuerWithSymmetricKey(ISSUER, SYMM_KEY);
 
     Assertions.assertThat(actual)
         .usingRecursiveComparison()
@@ -83,8 +83,8 @@ final class JwtClientsTests {
 
   @Test
   void testNewIssuerWithPrivateKey() {
-    JwtIssuer expected = new JwtIssuerImpl(ISSUER, keyPair.getPrivate());
-    JwtIssuer actual = JwtClients.newIssuerWithPrivateKey(ISSUER, keyPair.getPrivate());
+    JwtIssuer expected = new JwtIssuerImpl(ISSUER, KEY_PAIR.getPrivate());
+    JwtIssuer actual = JwtClients.newIssuerWithPrivateKey(ISSUER, KEY_PAIR.getPrivate());
 
     Assertions.assertThat(actual)
         .usingRecursiveComparison()

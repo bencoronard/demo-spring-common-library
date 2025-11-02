@@ -18,26 +18,26 @@ import io.jsonwebtoken.Jwts;
 
 final class JwtIssuerImpl implements JwtIssuer {
 
-  private final Supplier<JwtBuilder> builder;
+  private final Supplier<JwtBuilder> BUILDER;
 
   // =============================================================================
 
   JwtIssuerImpl(String issuer) {
-    builder = () -> Jwts.builder().issuer(issuer);
+    BUILDER = () -> Jwts.builder().issuer(issuer);
   }
 
   // -----------------------------------------------------------------------------
 
   JwtIssuerImpl(String issuer, SecretKey key) {
     Objects.requireNonNull(key, "Symmetric key must not be null");
-    builder = () -> Jwts.builder().signWith(key).issuer(issuer);
+    BUILDER = () -> Jwts.builder().signWith(key).issuer(issuer);
   }
 
   // -----------------------------------------------------------------------------
 
   JwtIssuerImpl(String issuer, PrivateKey key) {
     Objects.requireNonNull(key, "Private key must not be null");
-    builder = () -> Jwts.builder().signWith(key).issuer(issuer);
+    BUILDER = () -> Jwts.builder().signWith(key).issuer(issuer);
   }
 
   // =============================================================================
@@ -53,7 +53,7 @@ final class JwtIssuerImpl implements JwtIssuer {
     Instant now = Instant.now();
     Instant tokenEffective = now;
 
-    JwtBuilder jwt = builder.get();
+    JwtBuilder jwt = BUILDER.get();
 
     if (nbf != null) {
       tokenEffective = nbf;

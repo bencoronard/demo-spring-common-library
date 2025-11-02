@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class HttpGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-  private final Tracer tracer;
+  private final Tracer TRACER;
 
   // =============================================================================
 
@@ -40,7 +40,7 @@ public abstract class HttpGlobalExceptionHandler extends ResponseEntityException
 
     if (body instanceof ProblemDetail problemDetail) {
       problemDetail.setProperty("timestamp", Instant.now());
-      problemDetail.setProperty("trace", tracer.currentTraceContext().context().traceId());
+      problemDetail.setProperty("trace", TRACER.currentTraceContext().context().traceId());
     }
 
     return super.createResponseEntity(body, headers, statusCode, request);

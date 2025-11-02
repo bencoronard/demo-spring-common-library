@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class HttpAuthorizationHeaderResolver implements HandlerMethodArgumentResolver {
 
-  private final JwtVerifier verifier;
+  private final JwtVerifier VERIFIER;
 
   // =============================================================================
 
@@ -36,13 +36,13 @@ public final class HttpAuthorizationHeaderResolver implements HandlerMethodArgum
       @NonNull NativeWebRequest webRequest,
       @Nullable WebDataBinderFactory binderFactory) throws Exception {
 
-    String header = webRequest.getHeader(MessageHeader.Authorization);
+    String header = webRequest.getHeader(MessageHeader.AUTHORIZATION);
 
     if (header == null || header.isBlank()) {
-      throw new MissingRequestHeaderException(MessageHeader.Authorization, parameter);
+      throw new MissingRequestHeaderException(MessageHeader.AUTHORIZATION, parameter);
     }
 
-    return verifier.verifyToken(header.substring("Bearer ".length()));
+    return VERIFIER.verifyToken(header.substring("Bearer ".length()));
   }
 
 }

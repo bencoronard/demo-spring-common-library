@@ -23,8 +23,8 @@ import io.jsonwebtoken.Jwts;
 final class JwtImplTests {
 
   private final String ISSUER = this.getClass().getSimpleName();
-  private final SecretKey symmKey = Jwts.SIG.HS256.key().build();
-  private final KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
+  private final SecretKey SYMM_KEY = Jwts.SIG.HS256.key().build();
+  private final KeyPair KEY_PAIR = Jwts.SIG.RS256.keyPair().build();
 
   // =============================================================================
 
@@ -78,8 +78,8 @@ final class JwtImplTests {
 
   @Test
   void testIssueAndParseTokenWithSymmetricKey() {
-    JwtIssuer issuer = new JwtIssuerImpl(ISSUER, symmKey);
-    JwtVerifier verifier = new JwtVerifierImpl(symmKey);
+    JwtIssuer issuer = new JwtIssuerImpl(ISSUER, SYMM_KEY);
+    JwtVerifier verifier = new JwtVerifierImpl(SYMM_KEY);
 
     String token = issuer.issueToken(null, null, null, null, null);
     Assertions.assertThat(token).isNotBlank();
@@ -94,8 +94,8 @@ final class JwtImplTests {
 
   @Test
   void testIssueAndParseTokenWithAsymmetricKeys() {
-    JwtIssuer issuer = new JwtIssuerImpl(ISSUER, keyPair.getPrivate());
-    JwtVerifier verifier = new JwtVerifierImpl(keyPair.getPublic());
+    JwtIssuer issuer = new JwtIssuerImpl(ISSUER, KEY_PAIR.getPrivate());
+    JwtVerifier verifier = new JwtVerifierImpl(KEY_PAIR.getPublic());
 
     String token = issuer.issueToken(null, null, null, null, null);
     Assertions.assertThat(token).isNotBlank();

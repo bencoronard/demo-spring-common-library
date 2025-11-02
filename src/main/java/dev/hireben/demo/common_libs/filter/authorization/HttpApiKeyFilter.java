@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class HttpApiKeyFilter extends OncePerRequestFilter {
 
-  private final String expectedApiKey;
+  private final String EXPECTED_API_KEY;
 
   // =============================================================================
 
@@ -32,7 +32,7 @@ public final class HttpApiKeyFilter extends OncePerRequestFilter {
       return;
     }
 
-    if (!reqApiKey.strip().equals(expectedApiKey)) {
+    if (!reqApiKey.strip().equals(EXPECTED_API_KEY)) {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API key");
       return;
     }
