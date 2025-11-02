@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public final class ApiKeyFilter extends OncePerRequestFilter {
+public final class HttpApiKeyFilter extends OncePerRequestFilter {
 
   private final String expectedApiKey;
 

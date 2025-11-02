@@ -10,7 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public final class ApiAccessLogFilter extends OncePerRequestFilter {
+public final class HttpApiAccessLogFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(
