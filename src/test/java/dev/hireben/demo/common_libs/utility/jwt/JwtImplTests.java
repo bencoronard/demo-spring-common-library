@@ -1,6 +1,7 @@
 package dev.hireben.demo.common_libs.utility.jwt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.security.KeyPair;
@@ -9,9 +10,13 @@ import java.security.PublicKey;
 
 import javax.crypto.SecretKey;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import dev.hireben.demo.common_libs.utility.jwt.api.JwtIssuer;
+import dev.hireben.demo.common_libs.utility.jwt.api.JwtVerifier;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -54,14 +59,51 @@ final class JwtImplTests {
   }
 
   // -----------------------------------------------------------------------------
+
+  @Test
+  void testIssueAndParseTokenWithoutKey() {
+    JwtIssuer issuer = new JwtIssuerImpl(ISSUER);
+    JwtVerifier verifier = new JwtVerifierImpl();
+
+    String token = issuer.issueToken(null, null, null, null, null);
+    Assertions.assertThat(token).isNotBlank();
+
+    Claims claims = verifier.verifyToken(token);
+    assertNotNull(claims);
+    assertNotNull(claims.getId());
+    assertNotNull(claims.getIssuedAt());
+  }
+
   // -----------------------------------------------------------------------------
+
+  @Test
+  void testIssueAndParseTokenWithSymmetricKey() {
+    JwtIssuer issuer = new JwtIssuerImpl(ISSUER, symmKey);
+    JwtVerifier verifier = new JwtVerifierImpl(symmKey);
+
+    String token = issuer.issueToken(null, null, null, null, null);
+    Assertions.assertThat(token).isNotBlank();
+
+    Claims claims = verifier.verifyToken(token);
+    assertNotNull(claims);
+    assertNotNull(claims.getId());
+    assertNotNull(claims.getIssuedAt());
+  }
+
   // -----------------------------------------------------------------------------
-  // -----------------------------------------------------------------------------
-  // -----------------------------------------------------------------------------
-  // -----------------------------------------------------------------------------
-  // -----------------------------------------------------------------------------
-  // -----------------------------------------------------------------------------
-  // -----------------------------------------------------------------------------
-  // -----------------------------------------------------------------------------
+
+  @Test
+  void testIssueAndParseTokenWithAsymmetricKeys() {
+    JwtIssuer issuer = new JwtIssuerImpl(ISSUER, keyPair.getPrivate());
+    JwtVerifier verifier = new JwtVerifierImpl(keyPair.getPublic());
+
+    String token = issuer.issueToken(null, null, null, null, null);
+    Assertions.assertThat(token).isNotBlank();
+
+    Claims claims = verifier.verifyToken(token);
+    assertNotNull(claims);
+    assertNotNull(claims.getId());
+    assertNotNull(claims.getIssuedAt());
+  }
 
 }
