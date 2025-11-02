@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.http.handler;
+package dev.hireben.demo.common_libs.handler.exception;
 
 import java.net.SocketTimeoutException;
 import java.time.Instant;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import dev.hireben.demo.common_libs.http.dto.FieldValidationErrorMap;
 import io.jsonwebtoken.JwtException;
 import io.micrometer.tracing.Tracer;
 import jakarta.validation.ConstraintViolationException;
@@ -26,7 +25,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public abstract class HttpGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   private final Tracer tracer;
 
@@ -58,8 +57,8 @@ public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHand
 
     ProblemDetail problemDetail = ex.updateAndGetBody(getMessageSource(), LocaleContextHolder.getLocale());
 
-    Collection<FieldValidationErrorMap> errors = ex.getBindingResult().getAllErrors().stream()
-        .map(error -> FieldValidationErrorMap.builder()
+    Collection<HttpFieldValidationErrorMap> errors = ex.getBindingResult().getAllErrors().stream()
+        .map(error -> HttpFieldValidationErrorMap.builder()
             .field(((FieldError) error).getField())
             .message(error.getDefaultMessage())
             .build())
@@ -81,8 +80,8 @@ public abstract class GlobalExceptionHandler extends ResponseEntityExceptionHand
 
     ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, "Validation failed");
 
-    Collection<FieldValidationErrorMap> errors = ex.getConstraintViolations().stream()
-        .map(error -> FieldValidationErrorMap.builder()
+    Collection<HttpFieldValidationErrorMap> errors = ex.getConstraintViolations().stream()
+        .map(error -> HttpFieldValidationErrorMap.builder()
             .field(error.getPropertyPath().toString())
             .message(error.getMessage())
             .build())

@@ -10,7 +10,7 @@ import dev.hireben.demo.common_libs.utility.jwt.api.JwtVerifier;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class JwtClient {
+public class JwtClients {
 
   public JwtVerifier newVerifier() {
     return new JwtVerifierImpl();

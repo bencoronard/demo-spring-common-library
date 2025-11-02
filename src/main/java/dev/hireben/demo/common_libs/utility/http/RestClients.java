@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.http.factory;
+package dev.hireben.demo.common_libs.utility.http;
 
 import java.time.Duration;
 
@@ -11,9 +11,9 @@ import org.springframework.web.client.RestClient;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class RestClientFactory {
+public class RestClients {
 
-  public RestClient buildRestClient(
+  public RestClient newClient(
       Integer connTimeout,
       Integer readTimeout,
       Integer connReqTimeout) {

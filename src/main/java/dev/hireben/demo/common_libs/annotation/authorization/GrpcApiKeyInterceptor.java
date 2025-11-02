@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.grpc.interceptor;
+package dev.hireben.demo.common_libs.annotation.authorization;
 // package dev.hireben.demo.common.grpc.interceptor;
 
 // import org.springframework.web.service.invoker.HttpRequestValues.Metadata;
