@@ -33,7 +33,7 @@ public final class HttpApiAccessLogFilter extends OncePerRequestFilter {
       filterChain.doFilter(request, response);
     } finally {
 
-      if (!isAsyncStarted(request)) {
+      if (isAsyncStarted(request)) {
         return;
       }
 
