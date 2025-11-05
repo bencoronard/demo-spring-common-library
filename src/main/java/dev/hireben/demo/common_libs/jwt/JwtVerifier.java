@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.utility.jwt.api;
+package dev.hireben.demo.common_libs.jwt;
 
 import io.jsonwebtoken.Claims;
 

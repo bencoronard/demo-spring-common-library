@@ -1,48 +1,48 @@
-package dev.hireben.demo.common_libs.utility.jwt;
+package dev.hireben.demo.common_libs.jwt.utility;
 
 import java.security.PublicKey;
 import java.util.Objects;
 
 import javax.crypto.SecretKey;
 
-import dev.hireben.demo.common_libs.utility.jwt.api.JwtVerifier;
+import dev.hireben.demo.common_libs.jwt.JwtVerifier;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 
 final class JwtVerifierImpl implements JwtVerifier {
 
-  private final boolean SECURED;
-  private final JwtParser PARSER;
+  private final boolean secured;
+  private final JwtParser parser;
 
   // =============================================================================
 
   JwtVerifierImpl() {
-    SECURED = false;
-    PARSER = Jwts.parser().unsecured().build();
+    secured = false;
+    parser = Jwts.parser().unsecured().build();
   }
 
   // -----------------------------------------------------------------------------
 
   JwtVerifierImpl(SecretKey key) {
     Objects.requireNonNull(key, "Symmetric key must not be null");
-    SECURED = true;
-    PARSER = Jwts.parser().verifyWith(key).build();
+    secured = true;
+    parser = Jwts.parser().verifyWith(key).build();
   }
 
   // -----------------------------------------------------------------------------
 
   JwtVerifierImpl(PublicKey key) {
     Objects.requireNonNull(key, "Public key must not be null");
-    SECURED = true;
-    PARSER = Jwts.parser().verifyWith(key).build();
+    secured = true;
+    parser = Jwts.parser().verifyWith(key).build();
   }
 
   // =============================================================================
 
   @Override
   public Claims verifyToken(String token) {
-    return SECURED ? PARSER.parseSignedClaims(token).getPayload() : PARSER.parseUnsecuredClaims(token).getPayload();
+    return secured ? parser.parseSignedClaims(token).getPayload() : parser.parseUnsecuredClaims(token).getPayload();
   }
 
 }

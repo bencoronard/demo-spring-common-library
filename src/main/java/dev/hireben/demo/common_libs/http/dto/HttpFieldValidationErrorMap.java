@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.handler.exception;
+package dev.hireben.demo.common_libs.http.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -8,7 +8,7 @@ import lombok.Value;
 @Value
 @Builder
 @JsonPropertyOrder({ "field", "message" })
-final class HttpFieldValidationErrorMap {
+public final class HttpFieldValidationErrorMap {
   String field;
   String message;
 }

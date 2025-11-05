@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.utility.reader;
+package dev.hireben.demo.common_libs.crypto.utility;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,8 +19,8 @@ import org.junit.jupiter.api.TestInstance;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 final class KeyReaderTests {
 
-  private final String RSA_PRIVATE_KEY_PKCS8;
-  private final String RSA_PUBLIC_KEY_X509;
+  private final String rsaPrivateKeyPkcs8;
+  private final String rsaPublicKeyX509;
 
   // =============================================================================
 
@@ -28,15 +28,15 @@ final class KeyReaderTests {
     byte[] privateKeyFile = getClass().getResourceAsStream("/rsa-private-pkcs8.pem").readAllBytes();
     byte[] publicKeyFile = getClass().getResourceAsStream("/rsa-public-x509.pem").readAllBytes();
 
-    RSA_PRIVATE_KEY_PKCS8 = new String(privateKeyFile);
-    RSA_PUBLIC_KEY_X509 = new String(publicKeyFile);
+    rsaPrivateKeyPkcs8 = new String(privateKeyFile);
+    rsaPublicKeyX509 = new String(publicKeyFile);
   }
 
   // -----------------------------------------------------------------------------
 
   @Test
   void testReadRsaPrivateKeyPkcs8() throws NoSuchAlgorithmException, InvalidKeySpecException {
-    PrivateKey key = KeyReader.readRsaPrivateKeyPkcs8(RSA_PRIVATE_KEY_PKCS8);
+    PrivateKey key = KeyReader.readRsaPrivateKeyPkcs8(rsaPrivateKeyPkcs8);
     assertNotNull(key);
     assertNotNull(key.getEncoded());
     assertEquals("RSA", key.getAlgorithm());
@@ -48,7 +48,7 @@ final class KeyReaderTests {
   @Test
   void testReadRsaPublicKeyX509() throws NoSuchAlgorithmException,
       InvalidKeySpecException {
-    PublicKey key = KeyReader.readRsaPublicKeyX509(RSA_PUBLIC_KEY_X509);
+    PublicKey key = KeyReader.readRsaPublicKeyX509(rsaPublicKeyX509);
     assertNotNull(key);
     assertNotNull(key.getEncoded());
     assertEquals("RSA", key.getAlgorithm());
@@ -60,8 +60,8 @@ final class KeyReaderTests {
   @Test
   void testPublicKeyMatchesPrivateKey() throws NoSuchAlgorithmException,
       InvalidKeySpecException {
-    PrivateKey privateKey = KeyReader.readRsaPrivateKeyPkcs8(RSA_PRIVATE_KEY_PKCS8);
-    PublicKey publicKey = KeyReader.readRsaPublicKeyX509(RSA_PUBLIC_KEY_X509);
+    PrivateKey privateKey = KeyReader.readRsaPrivateKeyPkcs8(rsaPrivateKeyPkcs8);
+    PublicKey publicKey = KeyReader.readRsaPublicKeyX509(rsaPublicKeyX509);
 
     KeyFactory factory = KeyFactory.getInstance("RSA");
     RSAPrivateCrtKey privateCrtKey = (RSAPrivateCrtKey) privateKey;

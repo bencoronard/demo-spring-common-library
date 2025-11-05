@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.utility.jwt;
+package dev.hireben.demo.common_libs.jwt.utility;
 
 import java.security.PrivateKey;
 import java.time.Instant;
@@ -12,32 +12,32 @@ import java.util.function.Supplier;
 
 import javax.crypto.SecretKey;
 
-import dev.hireben.demo.common_libs.utility.jwt.api.JwtIssuer;
+import dev.hireben.demo.common_libs.jwt.JwtIssuer;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 
 final class JwtIssuerImpl implements JwtIssuer {
 
-  private final Supplier<JwtBuilder> BUILDER;
+  private final Supplier<JwtBuilder> builder;
 
   // =============================================================================
 
   JwtIssuerImpl(String issuer) {
-    BUILDER = () -> Jwts.builder().issuer(issuer);
+    builder = () -> Jwts.builder().issuer(issuer);
   }
 
   // -----------------------------------------------------------------------------
 
   JwtIssuerImpl(String issuer, SecretKey key) {
     Objects.requireNonNull(key, "Symmetric key must not be null");
-    BUILDER = () -> Jwts.builder().signWith(key).issuer(issuer);
+    builder = () -> Jwts.builder().signWith(key).issuer(issuer);
   }
 
   // -----------------------------------------------------------------------------
 
   JwtIssuerImpl(String issuer, PrivateKey key) {
     Objects.requireNonNull(key, "Private key must not be null");
-    BUILDER = () -> Jwts.builder().signWith(key).issuer(issuer);
+    builder = () -> Jwts.builder().signWith(key).issuer(issuer);
   }
 
   // =============================================================================
@@ -53,7 +53,7 @@ final class JwtIssuerImpl implements JwtIssuer {
     Instant now = Instant.now();
     Instant tokenEffective = now;
 
-    JwtBuilder jwt = BUILDER.get();
+    JwtBuilder jwt = builder.get();
 
     if (nbf != null) {
       tokenEffective = nbf;

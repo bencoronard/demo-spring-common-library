@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.annotation.authorization;
+package dev.hireben.demo.common_libs.http.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.NonNull;
@@ -10,14 +10,15 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import dev.hireben.demo.common_libs.constant.MessageHeader;
-import dev.hireben.demo.common_libs.utility.jwt.api.JwtVerifier;
+import dev.hireben.demo.common_libs.http.annotation.HttpAuthorizationHeader;
+import dev.hireben.demo.common_libs.jwt.JwtVerifier;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public final class HttpAuthorizationHeaderResolver implements HandlerMethodArgumentResolver {
 
-  private final JwtVerifier VERIFIER;
+  private final JwtVerifier verifier;
 
   // =============================================================================
 
@@ -42,7 +43,7 @@ public final class HttpAuthorizationHeaderResolver implements HandlerMethodArgum
       throw new MissingRequestHeaderException(MessageHeader.AUTHORIZATION, parameter);
     }
 
-    return VERIFIER.verifyToken(header.substring("Bearer ".length()));
+    return verifier.verifyToken(header.substring("Bearer ".length()));
   }
 
 }

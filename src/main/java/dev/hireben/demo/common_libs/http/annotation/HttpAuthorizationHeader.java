@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.annotation.authorization;
+package dev.hireben.demo.common_libs.http.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

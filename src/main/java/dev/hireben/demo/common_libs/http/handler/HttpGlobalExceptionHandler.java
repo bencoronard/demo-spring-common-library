@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.handler.exception;
+package dev.hireben.demo.common_libs.http.handler;
 
 import java.net.SocketTimeoutException;
 import java.time.Instant;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import dev.hireben.demo.common_libs.http.dto.HttpFieldValidationErrorMap;
 import io.jsonwebtoken.JwtException;
 import io.micrometer.tracing.Tracer;
 import jakarta.validation.ConstraintViolationException;
@@ -27,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class HttpGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-  private final Tracer TRACER;
+  private final Tracer tracer;
 
   // =============================================================================
 
@@ -40,7 +41,7 @@ public abstract class HttpGlobalExceptionHandler extends ResponseEntityException
 
     if (body instanceof ProblemDetail problemDetail) {
       problemDetail.setProperty("timestamp", Instant.now());
-      problemDetail.setProperty("trace", TRACER.currentTraceContext().context().traceId());
+      problemDetail.setProperty("trace", tracer.currentTraceContext().context().traceId());
     }
 
     return super.createResponseEntity(body, headers, statusCode, request);

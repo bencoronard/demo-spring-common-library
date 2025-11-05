@@ -1,12 +1,12 @@
-package dev.hireben.demo.common_libs.utility.jwt;
+package dev.hireben.demo.common_libs.jwt.utility;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
 import javax.crypto.SecretKey;
 
-import dev.hireben.demo.common_libs.utility.jwt.api.JwtIssuer;
-import dev.hireben.demo.common_libs.utility.jwt.api.JwtVerifier;
+import dev.hireben.demo.common_libs.jwt.JwtIssuer;
+import dev.hireben.demo.common_libs.jwt.JwtVerifier;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -14,19 +14,19 @@ public class JwtClients {
 
   public JwtVerifier newVerifier() {
     return new JwtVerifierImpl();
-  };
+  }
 
   // -----------------------------------------------------------------------------
 
   public JwtVerifier newVerifierWithSymmetricKey(SecretKey key) {
     return new JwtVerifierImpl(key);
-  };
+  }
 
   // -----------------------------------------------------------------------------
 
   public JwtVerifier newVerifierWithPublicKey(PublicKey key) {
     return new JwtVerifierImpl(key);
-  };
+  }
 
   // -----------------------------------------------------------------------------
 

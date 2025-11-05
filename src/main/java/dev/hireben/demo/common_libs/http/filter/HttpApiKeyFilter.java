@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.filter.authorization;
+package dev.hireben.demo.common_libs.http.filter;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class HttpApiKeyFilter extends OncePerRequestFilter {
 
-  private final String EXPECTED_API_KEY;
+  private final String expectedApiKey;
 
   // =============================================================================
 
@@ -32,7 +32,7 @@ public final class HttpApiKeyFilter extends OncePerRequestFilter {
       return;
     }
 
-    if (!reqApiKey.strip().equals(EXPECTED_API_KEY)) {
+    if (!reqApiKey.strip().equals(expectedApiKey)) {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API key");
       return;
     }

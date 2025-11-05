@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.utility.jwt.api;
+package dev.hireben.demo.common_libs.jwt;
 
 import java.time.Instant;
 import java.time.temporal.TemporalAmount;

@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.filter.audit;
+package dev.hireben.demo.common_libs.http.filter;
 
 import java.io.IOException;
 
@@ -33,15 +33,14 @@ public final class HttpApiAccessLogFilter extends OncePerRequestFilter {
       filterChain.doFilter(request, response);
     } finally {
 
-      if (isAsyncStarted(request)) {
-        return;
+      if (!isAsyncStarted(request)) {
+        logger.info(String.format(
+            "[id: %s] responded %d in %dms",
+            request.getRequestId(),
+            response.getStatus(),
+            System.currentTimeMillis() - start));
       }
 
-      logger.info(String.format(
-          "[id: %s] responded %d in %dms",
-          request.getRequestId(),
-          response.getStatus(),
-          System.currentTimeMillis() - start));
     }
   }
 

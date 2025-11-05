@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.utility.jwt;
+package dev.hireben.demo.common_libs.jwt.utility;
 
 import java.security.KeyPair;
 
@@ -8,16 +8,16 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import dev.hireben.demo.common_libs.utility.jwt.api.JwtIssuer;
-import dev.hireben.demo.common_libs.utility.jwt.api.JwtVerifier;
+import dev.hireben.demo.common_libs.jwt.JwtIssuer;
+import dev.hireben.demo.common_libs.jwt.JwtVerifier;
 import io.jsonwebtoken.Jwts;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 final class JwtClientsTests {
 
-  private final String ISSUER = getClass().getSimpleName();
-  private final SecretKey SYMM_KEY = Jwts.SIG.HS256.key().build();
-  private final KeyPair KEY_PAIR = Jwts.SIG.RS256.keyPair().build();
+  private final String issuerName = getClass().getSimpleName();
+  private final SecretKey symmetricKey = Jwts.SIG.HS256.key().build();
+  private final KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
 
   // =============================================================================
 
@@ -35,8 +35,8 @@ final class JwtClientsTests {
 
   @Test
   void testNewVerifierWithSymmetricKey() {
-    JwtVerifier expected = new JwtVerifierImpl(SYMM_KEY);
-    JwtVerifier actual = JwtClients.newVerifierWithSymmetricKey(SYMM_KEY);
+    JwtVerifier expected = new JwtVerifierImpl(symmetricKey);
+    JwtVerifier actual = JwtClients.newVerifierWithSymmetricKey(symmetricKey);
 
     Assertions.assertThat(actual)
         .usingRecursiveComparison()
@@ -47,8 +47,8 @@ final class JwtClientsTests {
 
   @Test
   void testNewVerifierWithPublicKey() {
-    JwtVerifier expected = new JwtVerifierImpl(KEY_PAIR.getPublic());
-    JwtVerifier actual = JwtClients.newVerifierWithPublicKey(KEY_PAIR.getPublic());
+    JwtVerifier expected = new JwtVerifierImpl(keyPair.getPublic());
+    JwtVerifier actual = JwtClients.newVerifierWithPublicKey(keyPair.getPublic());
 
     Assertions.assertThat(actual)
         .usingRecursiveComparison()
@@ -59,8 +59,8 @@ final class JwtClientsTests {
 
   @Test
   void testNewIssuer() {
-    JwtIssuer expected = new JwtIssuerImpl(ISSUER);
-    JwtIssuer actual = JwtClients.newIssuer(ISSUER);
+    JwtIssuer expected = new JwtIssuerImpl(issuerName);
+    JwtIssuer actual = JwtClients.newIssuer(issuerName);
 
     Assertions.assertThat(actual)
         .usingRecursiveComparison()
@@ -71,8 +71,8 @@ final class JwtClientsTests {
 
   @Test
   void testNewIssuerWithSymmetricKey() {
-    JwtIssuer expected = new JwtIssuerImpl(ISSUER, SYMM_KEY);
-    JwtIssuer actual = JwtClients.newIssuerWithSymmetricKey(ISSUER, SYMM_KEY);
+    JwtIssuer expected = new JwtIssuerImpl(issuerName, symmetricKey);
+    JwtIssuer actual = JwtClients.newIssuerWithSymmetricKey(issuerName, symmetricKey);
 
     Assertions.assertThat(actual)
         .usingRecursiveComparison()
@@ -83,8 +83,8 @@ final class JwtClientsTests {
 
   @Test
   void testNewIssuerWithPrivateKey() {
-    JwtIssuer expected = new JwtIssuerImpl(ISSUER, KEY_PAIR.getPrivate());
-    JwtIssuer actual = JwtClients.newIssuerWithPrivateKey(ISSUER, KEY_PAIR.getPrivate());
+    JwtIssuer expected = new JwtIssuerImpl(issuerName, keyPair.getPrivate());
+    JwtIssuer actual = JwtClients.newIssuerWithPrivateKey(issuerName, keyPair.getPrivate());
 
     Assertions.assertThat(actual)
         .usingRecursiveComparison()

@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.utility.http;
+package dev.hireben.demo.common_libs.http.utility;
 
 import java.time.Duration;
 
