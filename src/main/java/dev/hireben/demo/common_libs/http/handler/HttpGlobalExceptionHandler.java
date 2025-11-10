@@ -3,6 +3,8 @@ package dev.hireben.demo.common_libs.http.handler;
 import java.net.SocketTimeoutException;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Map;
+
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import dev.hireben.demo.common_libs.exception.ApplicationException;
 import dev.hireben.demo.common_libs.http.dto.HttpFieldValidationErrorMap;
 import io.jsonwebtoken.JwtException;
 import io.micrometer.tracing.Tracer;
@@ -29,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public abstract class HttpGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   private final Tracer tracer;
+  protected final Map<Class<? extends Throwable>, HttpStatus> exceptionStatusMap = Map.of();
 
   // =============================================================================
 
@@ -133,6 +137,20 @@ public abstract class HttpGlobalExceptionHandler extends ResponseEntityException
     HttpStatus status = HttpStatus.UNAUTHORIZED;
 
     ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, "Authorization failed");
+
+    return createResponseEntity(problemDetail, HttpHeaders.EMPTY, status, request);
+  }
+
+  // -----------------------------------------------------------------------------
+
+  @ExceptionHandler(ApplicationException.class)
+  private ResponseEntity<Object> handleApplicationException(
+      ApplicationException ex,
+      WebRequest request) {
+
+    HttpStatus status = exceptionStatusMap.getOrDefault(ex.getClass(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, ex.getMessage());
 
     return createResponseEntity(problemDetail, HttpHeaders.EMPTY, status, request);
   }
