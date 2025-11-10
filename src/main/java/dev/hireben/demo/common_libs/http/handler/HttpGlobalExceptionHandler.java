@@ -3,6 +3,7 @@ package dev.hireben.demo.common_libs.http.handler;
 import java.net.SocketTimeoutException;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -32,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 public abstract class HttpGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   private final Tracer tracer;
-  protected final Map<Class<? extends Throwable>, HttpStatus> exceptionStatusMap = Map.of();
+  protected static final Map<Class<? extends Throwable>, HttpStatus> exceptionStatusMap = new HashMap<>();
 
   // =============================================================================
 
