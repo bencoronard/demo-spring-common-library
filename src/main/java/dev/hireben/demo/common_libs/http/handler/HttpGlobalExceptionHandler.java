@@ -22,6 +22,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import dev.hireben.demo.common_libs.exception.ApplicationException;
+import dev.hireben.demo.common_libs.exception.InsufficientPermissionException;
 import dev.hireben.demo.common_libs.http.dto.HttpFieldValidationErrorMap;
 import io.jsonwebtoken.JwtException;
 import io.micrometer.tracing.Tracer;
@@ -33,7 +34,8 @@ import lombok.RequiredArgsConstructor;
 public abstract class HttpGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   private final Tracer tracer;
-  protected static final Map<Class<? extends Throwable>, HttpStatus> exceptionStatusMap = new HashMap<>();
+  protected static final Map<Class<? extends Throwable>, HttpStatus> exceptionStatusMap = new HashMap<>(
+      Map.of(InsufficientPermissionException.class, HttpStatus.FORBIDDEN));
 
   // =============================================================================
 

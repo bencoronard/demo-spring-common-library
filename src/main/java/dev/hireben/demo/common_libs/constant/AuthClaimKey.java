@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class AuthClaimKey {
 
-  public final String TENANT_ID = "tenant-id";
+  public final String TENANT = "tenant";
+  public final String PERMISSIONS = "allow";
 
 }
